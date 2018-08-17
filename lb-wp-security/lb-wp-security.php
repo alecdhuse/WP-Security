@@ -1,47 +1,72 @@
 <?php
 /*
-Plugin Name: Little Bonsai WP Security
-
+* Little Bonsai WP Security
+*
+* @link              https://littlebonsai.co
+* @since             0.0.1
+* @package           lb-wp-security
+*
+* @wordpress-plugin
+* Plugin Name:       Little Bonsai WP Security
+* Plugin URI:        https://littlebonsai.co
+* Description:       Basic security features for WordPress.
+* Version:           0.0.1
+* Author:            Little Bonsai
+* Author URI:        https://littlebonsai.co
+* License:           TBD
+* License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+* Text Domain:       lb-wp-security
+* Domain Path:       /languages
 */
 
 defined('ABSPATH') or die('Direct access is not allowed.');
 
-function report_ip($api_key, $ip, $user_agent) {
-  $url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
-  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'Failed WordPress Login', 'tags' => 'malicious-login', 'ref_url' => '');
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'LB-WP-SECURITY', '0.0.1' );
 
-  $options = array(
-      'http' => array(
-          'method'  => 'POST',
-          'content' => http_build_query($data),
-          'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
-                       "Accept: application/json\r\n" .
-                       "Auth: $api_key\r\n"
-      )
-  );
-
-  $context  = stream_context_create($options);
-  $result = file_get_contents($url, false, $context);
-  if ($result === FALSE) { /* Handle error */ }
-
-  var_dump($result);
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-lb-wp-security-activator.php
+ */
+function activate_lb_wp_security() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-lb-wp-security-activator.php';
+	LB_WP_Security_Activator::activate();
 }
 
-function login_failed($username) {
-  $ip = $_SERVER['REMOTE_ADDR'];
-  $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
-  $myfile = fopen("api.key", "r") or die("Error reading api key.");
-  $api_key = trim(fread($myfile,filesize("api.key")));
-  fclose($myfile);
-
-  report_ip($api_key, $ip, $user_agent);
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-lb-wp-security-deactivator.php
+ */
+function deactivate_lb_wp_security() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-lb-wp-security-deactivator.php';
+	LB_WP_Security_Deactivator::deactivate();
 }
 
-function init() {
-  add_action('wp_login_failed', 'login_failed');
+register_activation_hook( __FILE__, 'activate_lb_wp_security' );
+register_deactivation_hook( __FILE__, 'deactivate_lb_wp_security' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-lb-wp-security.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_lb_wp_security() {
+	$plugin = new LB_WP_Security();
+	$plugin->run();
 }
 
-init();
-
-?>
+run_lb_wp_security();
