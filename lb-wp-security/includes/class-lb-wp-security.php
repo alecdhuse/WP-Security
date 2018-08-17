@@ -70,7 +70,7 @@ class LB_WP_Security {
 		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
 			$this->version = PLUGIN_NAME_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '0.0.1';
 		}
 		$this->plugin_name = 'lb-wp-security';
 
@@ -156,7 +156,7 @@ class LB_WP_Security {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+		$this->loader->add_action( 'wp_login_failed', $plugin_admin, 'login_failed');
 	}
 
 	/**
@@ -172,7 +172,6 @@ class LB_WP_Security {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'wp_login_failed', $plugin_public, 'login_failed');
 	}
 
 	/**
@@ -215,35 +214,4 @@ class LB_WP_Security {
 		return $this->version;
 	}
 
-	function report_ip($api_key, $ip, $user_agent) {
-	  $url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
-	  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'Failed WordPress Login', 'tags' => 'malicious-login', 'ref_url' => '');
-
-	  $options = array(
-	      'http' => array(
-	          'method'  => 'POST',
-	          'content' => http_build_query($data),
-	          'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
-	                       "Accept: application/json\r\n" .
-	                       "Auth: $api_key\r\n"
-	      )
-	  );
-
-	  $context  = stream_context_create($options);
-	  $result = file_get_contents($url, false, $context);
-	  if ($result === FALSE) { /* Handle error */ }
-
-	  var_dump($result);
-	}
-
-	function login_failed($username) {
-	  $ip = $_SERVER['REMOTE_ADDR'];
-	  $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
-	  $myfile = fopen("api.key", "r") or die("Error reading api key.");
-	  $api_key = trim(fread($myfile,filesize("api.key")));
-	  fclose($myfile);
-
-	  report_ip($api_key, $ip, $user_agent);
-	}
 }

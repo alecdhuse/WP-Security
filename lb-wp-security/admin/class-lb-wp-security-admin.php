@@ -100,4 +100,34 @@ class LB_WP_Security_Admin {
 
 	}
 
+	function login_failed($username) {
+	  $ip = $_SERVER['REMOTE_ADDR'];
+	  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+		$file_path = WP_PLUGIN_DIR . "/lb-wp-security/api.key";
+	  $myfile = fopen($file_path, "r") or die("Error reading api key.");
+	  $api_key = trim(fread($myfile,filesize($file_path)));
+	  fclose($myfile);
+
+		$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
+	  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'Failed WordPress Login', 'tags' => 'malicious-login', 'ref_url' => '');
+
+	  $options = array(
+	      'http' => array(
+	          'method'  => 'POST',
+	          'content' => http_build_query($data),
+	          'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+	                       "Accept: application/json\r\n" .
+	                       "Auth: $api_key\r\n"
+	      )
+	  );
+
+	  $context  = stream_context_create($options);
+	  $result = file_get_contents($url, false, $context);
+	  if ($result === FALSE) {
+			/* Handle error */
+			echo ("Error adm-inc-01");
+		}
+	}
+
 }
