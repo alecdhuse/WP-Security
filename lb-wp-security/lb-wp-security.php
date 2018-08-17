@@ -4,18 +4,19 @@ Plugin Name: Little Bonsai WP Security
 
 */
 
-//defined('ABSPATH') or die('Direct access is not allowed.');
+defined('ABSPATH') or die('Direct access is not allowed.');
 
 function report_ip($api_key, $ip, $user_agent) {
   $url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
   $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'Failed WordPress Login', 'tags' => 'malicious-login', 'ref_url' => '');
 
-  // use key 'http' even if you send the request to https://...
   $options = array(
       'http' => array(
-          'header'  => "Content-type: application/json\r\nAuth: $api_key\r\n",
           'method'  => 'POST',
-          'content' => http_build_query($data)
+          'content' => http_build_query($data),
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+                       "Accept: application/json\r\n" .
+                       "Auth: $api_key\r\n"
       )
   );
 
