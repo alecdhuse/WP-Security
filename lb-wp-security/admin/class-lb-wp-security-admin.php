@@ -145,7 +145,7 @@ class LB_WP_Security_Admin {
 				  fclose($myfile);
 
 					$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
-				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'Failed WordPress Login', 'tags' => 'malicious-login', 'ref_url' => '');
+				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login', 'ref_url' => '');
 
 				  $options = array(
 				      'http' => array(
