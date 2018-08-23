@@ -192,6 +192,20 @@ class LB_WP_Security_Admin {
 				'user_agent' => $user_agent
 			)
 		);
+
+		/* Reset failed logins count */
+		$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
+		$results = $wpdb->get_results("SELECT id FROM $table_name WHERE ip='$ip' AND user_agent='$user_agent'");
+
+		if (sizeof($results) > 0) {
+			$wpdb->update(
+				$table_name,
+				array('seen_count' => 0),
+				array('id' => $ip_id ),
+				array('%d'),
+				array('%d')
+			);
+		}
 	}
 
 }
