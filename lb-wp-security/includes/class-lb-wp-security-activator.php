@@ -4,7 +4,7 @@
  * Fired during plugin activation
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      0.0.1
  *
  * @package    LB_WP_Security
  * @subpackage LB_WP_Security/includes
@@ -15,7 +15,7 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      1.0.0
+ * @since      0.0.2
  * @package    LB_WP_Security
  * @subpackage LB_WP_Security/includes
  * @author     Your Name <email@example.com>
@@ -27,16 +27,18 @@ class LB_WP_Security_Activator {
 	 *
 	 * Long Description.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.2
 	 */
 	public static function activate() {
 
 		/* Create database tables */
 		global $wpdb;
 
-    $table_name = $wpdb->prefix . "littlebonsai_failed_logins";
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$charset_collate = $wpdb->get_charset_collate();
 
+		/* Failed logins */
+		$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
 		$sql = "CREATE TABLE $table_name (
 		  id mediumint(9) NOT NULL AUTO_INCREMENT,
 			ip tinytext NOT NULL,
@@ -48,7 +50,19 @@ class LB_WP_Security_Activator {
 		  PRIMARY KEY  (id)
 		) $charset_collate;";
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+
+		/* successful ogins */
+		$table_name = $wpdb->prefix . "littlebonsai_successful_logins";
+		$sql = "CREATE TABLE $table_name (
+		  id mediumint(9) NOT NULL AUTO_INCREMENT,
+			ip tinytext NOT NULL,
+			user tinytext NOT NULL,
+			user_agent text NOT NULL,
+			login_time timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		  PRIMARY KEY  (id)
+		) $charset_collate;";
+
 		dbDelta( $sql );
 	}
 

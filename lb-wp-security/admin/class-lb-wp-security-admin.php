@@ -4,7 +4,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      0.0.1
  *
  * @package    LB-WP-Security
  * @subpackage LB-WP-Security/admin
@@ -25,7 +25,7 @@ class LB_WP_Security_Admin {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.1
 	 * @access   private
 	 * @var      string    $lb_wp_security    The ID of this plugin.
 	 */
@@ -34,7 +34,7 @@ class LB_WP_Security_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.1
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -43,7 +43,7 @@ class LB_WP_Security_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.1
 	 * @param      string    $lb_wp_security       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
@@ -57,7 +57,7 @@ class LB_WP_Security_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.1
 	 */
 	public function enqueue_styles() {
 
@@ -80,7 +80,7 @@ class LB_WP_Security_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    0.0.1
 	 */
 	public function enqueue_scripts() {
 
@@ -107,9 +107,7 @@ class LB_WP_Security_Admin {
 	  $ip = $_SERVER['REMOTE_ADDR'];
 	  $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-		/* Add failed login info to logins table */
 		$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
-
 		$results = $wpdb->get_results("SELECT id, seen_count, reported FROM $table_name WHERE ip='$ip' AND user_agent='$user_agent'");
 
 		if (sizeof($results) == 0) {
@@ -174,6 +172,26 @@ class LB_WP_Security_Admin {
 				}
 			}
 		}
+	}
+
+	function login_successful($user_login, $user) {
+		global $wpdb;
+
+		/* Collect information on source of login */
+	  $ip = $_SERVER['REMOTE_ADDR'];
+	  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+		/* Add successful login info to table */
+		$table_name = $wpdb->prefix . "littlebonsai_successful_logins";
+
+		$wpdb->insert(
+			$table_name,
+			array(
+				'ip' => $ip,
+				'user' => $user_login,
+				'user_agent' => $user_agent
+			)
+		);
 	}
 
 }

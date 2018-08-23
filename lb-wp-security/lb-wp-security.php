@@ -10,7 +10,7 @@
 * Plugin Name:       Little Bonsai WP Security
 * Plugin URI:        https://littlebonsai.co
 * Description:       Basic security features for WordPress.
-* Version:           0.0.1
+* Version:           0.0.2
 * Author:            Little Bonsai
 * Author URI:        https://littlebonsai.co
 * License:           TBD
@@ -23,10 +23,10 @@ defined('ABSPATH') or die('Direct access is not allowed.');
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Start at version 0.0.1 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'LB-WP-SECURITY', '0.0.1' );
+define( 'LB-WP-SECURITY', '0.0.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -62,7 +62,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-lb-wp-security.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    0.0.1
  */
 function run_lb_wp_security() {
 	$plugin = new LB_WP_Security();
