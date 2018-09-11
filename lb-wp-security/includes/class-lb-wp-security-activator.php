@@ -64,17 +64,26 @@ class LB_WP_Security_Activator {
 		) $charset_collate;";
 
 		dbDelta( $sql );
+
+		/* settings table */
+		$table_name = $wpdb->prefix . "littlebonsai_settings";
+		$sql = "CREATE TABLE $table_name (
+			setting_id mediumint(9) NOT NULL AUTO_INCREMENT,
+			setting_name tinytext NOT NULL,
+			setting_value tinytext NOT NULL,
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		dbDelta( $sql );
+
+		/* Add default settings */
+		$wpdb->insert(
+			$table_name,
+			array(
+				'setting_name' => "api_key",
+				'setting_value' => ""
+			)
+		);
+
 	}
-
-	/* settings table */
-	$table_name = $wpdb->prefix . "littlebonsai_settings";
-	$sql = "CREATE TABLE $table_name (
-		setting_id mediumint(9) NOT NULL AUTO_INCREMENT,
-		setting_name tinytext NOT NULL,
-		setting_value tinytext NOT NULL,
-		PRIMARY KEY  (id)
-	) $charset_collate;";
-
-	dbDelta( $sql );
-}
 }
