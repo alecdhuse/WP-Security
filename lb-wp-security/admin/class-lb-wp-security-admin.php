@@ -105,7 +105,7 @@ class LB_WP_Security_Admin {
 
 		/* Collect information on source of login */
 	  $ip = $_SERVER['REMOTE_ADDR'];
-	  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+	  $user_agent = esc_sql($_SERVER['HTTP_USER_AGENT']);
 
 		$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
 		$results = $wpdb->get_results("SELECT id, seen_count, reported FROM $table_name WHERE ip='$ip' AND user_agent='$user_agent'");
@@ -137,13 +137,20 @@ class LB_WP_Security_Admin {
 			/* If there are more than two failed login send alert */
 			if ($seen_count_new > 2) {
 				if ($reported == False) {
+					/* Get API key */
+					$table_name = $wpdb->prefix . "littlebonsai_settings";
+					$results = $wpdb->get_results("SELECT setting_value FROM $table_name WHERE setting_name='api_key'");
+					$api_key = $results[0]->setting_value;
+
+					/*
 					$file_path = WP_PLUGIN_DIR . "/lb-wp-security/api.key";
 				  $myfile = fopen($file_path, "r") or die("Error reading api key.");
 				  $api_key = trim(fread($myfile,filesize($file_path)));
 				  fclose($myfile);
+					*/
 
 					$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
-				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login, wordpress', 'ref_url' => '');
+				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login,wordpress', 'ref_url' => '');
 
 				  $options = array(
 				      'http' => array(

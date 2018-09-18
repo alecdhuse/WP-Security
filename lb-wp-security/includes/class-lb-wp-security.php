@@ -70,7 +70,7 @@ class LB_WP_Security {
 		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
 			$this->version = PLUGIN_NAME_VERSION;
 		} else {
-			$this->version = '0.0.2';
+			$this->version = '0.0.3';
 		}
 		$this->plugin_name = 'lb-wp-security';
 

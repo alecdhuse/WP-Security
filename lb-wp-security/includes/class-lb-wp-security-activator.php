@@ -71,7 +71,7 @@ class LB_WP_Security_Activator {
 			setting_id mediumint(9) NOT NULL AUTO_INCREMENT,
 			setting_name tinytext NOT NULL,
 			setting_value tinytext NOT NULL,
-			PRIMARY KEY  (id)
+			PRIMARY KEY  (setting_id)
 		) $charset_collate;";
 
 		dbDelta( $sql );
