@@ -168,6 +168,8 @@ class LB_WP_Security_Admin {
 						echo ("Error adm-inc-01");
 					} else {
 						/* Change status to reported */
+						$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
+						
 						$wpdb->update(
 							$table_name,
 							array('reported' => 1),
