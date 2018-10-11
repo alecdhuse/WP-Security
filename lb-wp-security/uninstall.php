@@ -20,7 +20,7 @@
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
  * @link       http://example.com
- * @since      1.0.0
+ * @since      0.0.4
  *
  * @package    Plugin_Name
  */
@@ -29,3 +29,14 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+/* Remove database tables */
+global $wpdb;
+
+$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
+$sql = "DROP TABLE IF EXISTS $table_name";
+$wpdb->query($sql);
+
+$table_name = $wpdb->prefix . "littlebonsai_successful_logins";
+$sql = "DROP TABLE IF EXISTS $table_name";
+$wpdb->query($sql);

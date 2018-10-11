@@ -142,13 +142,6 @@ class LB_WP_Security_Admin {
 					$results = $wpdb->get_results("SELECT setting_value FROM $table_name WHERE setting_name='api_key'");
 					$api_key = $results[0]->setting_value;
 
-					/*
-					$file_path = WP_PLUGIN_DIR . "/lb-wp-security/api.key";
-				  $myfile = fopen($file_path, "r") or die("Error reading api key.");
-				  $api_key = trim(fread($myfile,filesize($file_path)));
-				  fclose($myfile);
-					*/
-
 					$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
 				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login,wordpress', 'ref_url' => '');
 
@@ -169,14 +162,15 @@ class LB_WP_Security_Admin {
 					} else {
 						/* Change status to reported */
 						$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
-						
+
 						$wpdb->update(
 							$table_name,
-							array('reported' => 1),
+							array('reported' => 1, 'reported_time' => current_time('mysql')),
 							array('id' => $ip_id ),
 							array('%d'),
 							array('%d')
 						);
+
 					}
 				}
 			}

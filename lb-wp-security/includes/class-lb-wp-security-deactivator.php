@@ -23,9 +23,9 @@
 class LB_WP_Security_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Deactivate plugin from active use.
 	 *
-	 * Long Description.
+	 * Turn off active hooks for plugin.
 	 *
 	 * @since    0.0.1
 	 */

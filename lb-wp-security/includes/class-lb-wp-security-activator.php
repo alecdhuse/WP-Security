@@ -46,6 +46,7 @@ class LB_WP_Security_Activator {
 			seen_count mediumint(9) DEFAULT '1' NOT NULL,
 		  first_seen timestamp DEFAULT 0,
 			last_seen timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+			reported_time timestamp DEFAULT 0,
 			reported boolean DEFAULT False NOT NULL,
 		  PRIMARY KEY  (id)
 		) $charset_collate;";
