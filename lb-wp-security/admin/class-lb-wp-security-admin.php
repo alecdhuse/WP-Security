@@ -165,9 +165,12 @@ class LB_WP_Security_Admin {
 
 						$wpdb->update(
 							$table_name,
-							array('reported' => 1, 'reported_time' => current_time('mysql')),
+							array(
+								'reported' => 1,
+								'reported_time' => current_time('mysql')
+							),
 							array('id' => $ip_id ),
-							array('%d'),
+							array('%d', '%s'),
 							array('%d')
 						);
 
