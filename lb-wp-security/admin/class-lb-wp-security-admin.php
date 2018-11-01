@@ -143,7 +143,7 @@ class LB_WP_Security_Admin {
 					$api_key = $results[0]->setting_value;
 
 					$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
-				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login,wordpress', 'ref_url' => '');
+				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login,wordpress', 'ref_url' => 'https://littlebonsai.co/docs/reported-ip-tags.html#WordPressLoginBrute-forcing');
 
 				  $options = array(
 				      'http' => array(
