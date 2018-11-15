@@ -157,8 +157,14 @@ class LB_WP_Security {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		/* Login hooks */
 		$this->loader->add_action( 'wp_login_failed', $plugin_admin, 'login_failed');
 		$this->loader->add_action( 'wp_login', $plugin_admin, 'login_successful', 10, 2);
+
+		/* Comment hooks */
+		$this->loader->add_action( 'comment_post', 'post_comment', 10, 3 );
+		$this->loader->add_action( 'spammed_comment', 'mark_comment_as_spam', 10, 1 );
+		$this->loader->add_action( 'unspammed_comment', 'unmark_comment_as_spam', 10, 1 );
 	}
 
 	/**

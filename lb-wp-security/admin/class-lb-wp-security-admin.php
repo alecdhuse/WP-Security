@@ -223,4 +223,18 @@ class LB_WP_Security_Admin {
 		}
 	}
 
+	/* Future code fired when a comment is marked as spam */
+	function mark_comment_as_spam($comment_ID) {
+		return True;
+	}
+
+	/* Future code for determining if a comment is spam */
+	function post_comment($comment_ID, $comment_approved, $commentdata) {
+		return True;
+	}
+
+	/* Future code fired when a comment is unmarked as spam */
+	function unmark_comment_as_spam($comment_ID) {
+		return True;
+	}
 }
