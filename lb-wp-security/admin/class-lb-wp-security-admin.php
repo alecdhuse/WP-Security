@@ -108,7 +108,7 @@ class LB_WP_Security_Admin {
 	  $user_agent = esc_sql($_SERVER['HTTP_USER_AGENT']);
 
 		$table_name = $wpdb->prefix . "littlebonsai_failed_logins";
-		$results = $wpdb->get_results("SELECT id, seen_count, reported FROM $table_name WHERE ip='$ip' AND user_agent='$user_agent'");
+		$results = $wpdb->get_results("SELECT id, seen_count, reported, reported_time FROM $table_name WHERE ip='$ip' AND user_agent='$user_agent'");
 
 		if (sizeof($results) == 0) {
 			$wpdb->insert(
@@ -124,6 +124,15 @@ class LB_WP_Security_Admin {
 			$seen_count = $results[0]->seen_count;
 			$seen_count_new = $seen_count + 1;
 			$reported = $results[0]->reported;
+
+			$current_time = time();
+			$reported_time_str = $results[0]->reported_time;
+			$reported_time = strtotime($reported_time_str);
+
+			// If IP was reported over 30 days ago, re-report
+			if (($current_time - $reported_time) > 2592000) {
+				$reported = False;
+			}
 
 			/* Update seen count */
 			$wpdb->update(
