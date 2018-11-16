@@ -240,6 +240,9 @@ class LB_WP_Security_Admin {
 
 	function comment_blacklist_check($author_name, $author_email, $author_url, $comment_text, $author_ip_address, $author_user_agent) {
 		return False;
-		//execute a wp_die to reject the comment
+		//get score data from littlebonsai
+		//score for user_agent, ip_address, email, url
+		//add up scores to see if they meet a threashold
+		//execute a wp_die to reject the comment, if threshold is reached.
 	}
 }
