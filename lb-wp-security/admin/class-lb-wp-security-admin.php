@@ -237,4 +237,9 @@ class LB_WP_Security_Admin {
 	function unmark_comment_as_spam($comment_ID) {
 		return True;
 	}
+
+	function comment_blacklist_check($author_name, $author_email, $author_url, $comment_text, $author_ip_address, $author_user_agent) {
+		return False;
+		//execute a wp_die to reject the comment
+	}
 }

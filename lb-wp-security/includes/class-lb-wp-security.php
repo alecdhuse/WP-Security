@@ -165,6 +165,7 @@ class LB_WP_Security {
 		$this->loader->add_action( 'comment_post', 'post_comment', 10, 3 );
 		$this->loader->add_action( 'spammed_comment', 'mark_comment_as_spam', 10, 1 );
 		$this->loader->add_action( 'unspammed_comment', 'unmark_comment_as_spam', 10, 1 );
+		$this->loader->add_action( 'wp_blacklist_check ', 'comment_blacklist_check', 10, 6 );
 	}
 
 	/**
