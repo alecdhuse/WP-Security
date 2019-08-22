@@ -151,7 +151,7 @@ class LB_WP_Security_Admin {
 					$results = $wpdb->get_results("SELECT setting_value FROM $table_name WHERE setting_name='api_key'");
 					$api_key = $results[0]->setting_value;
 
-					$url = 'https://littlebonsai.co/api/v0.3/add_blacklist_ip.php';
+					$url = 'https://littlebonsai.co/api/v0.10/report_ip.php';
 				  $data = array('ip' => $ip, 'user_agent' => $user_agent, 'comment' => 'WordPress Login Brute-forcing', 'tags' => 'malicious-login,wordpress', 'ref_url' => 'https://littlebonsai.co/docs/reported-ip-tags.html#WordPressLoginBrute-forcing');
 
 				  $options = array(
@@ -160,7 +160,7 @@ class LB_WP_Security_Admin {
 				          'content' => http_build_query($data),
 				          'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
 				                       "Accept: application/json\r\n" .
-				                       "Auth: $api_key\r\n"
+				                       "Authorization: Bearer $api_key\r\n"
 				      )
 				  );
 
